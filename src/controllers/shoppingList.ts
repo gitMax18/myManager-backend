@@ -17,6 +17,24 @@ export const getShoppingLists = catchAsyncError(
     }
 );
 
+export const addProducts = catchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+
+        const product = await prisma.product.create({
+            data: {
+                shoppingListId: +id,
+                ...req.body,
+            },
+        });
+
+        res.status(201).json({
+            message: "product added",
+            data: product,
+        });
+    }
+);
+
 export const addShoppingList = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         let list: Prisma.ShoppingListCreateInput;
