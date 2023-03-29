@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import HttpException from "../../utils/HttpException";
 
 export default (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
     if (!req.body.name || typeof req.body.name !== "string") {
         throw new HttpException("validation error", 400, {
             name: "Value name is required",
@@ -16,12 +17,12 @@ export default (req: Request, res: Response, next: NextFunction) => {
             });
         }
         products.forEach((product, index) => {
-            if (!product["product"] || !product["quantity"]) {
+            if (!product["name"] || !product["quantity"]) {
                 throw new HttpException("validation error", 400, {
                     products: "Invalid data keys for product at : " + index,
                 });
             }
-            if (typeof product["product"] !== "string" || typeof product["quantity"] !== "number") {
+            if (typeof product["name"] !== "string" || typeof product["quantity"] !== "number") {
                 throw new HttpException("validation error", 400, {
                     products: "Invalid data value for product at : " + index,
                 });

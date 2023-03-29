@@ -11,18 +11,18 @@ datasource db {
 }
 
 model ShoppingList {
-  id           Int           @id @default(autoincrement())
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  name         String
-  shoppingRows ShoppingRow[]
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String
+  products  Product[]
 }
 
-model ShoppingRow {
+model Product {
   id             Int          @id @default(autoincrement())
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
-  product        String
+  name           String
   quantity       Int
   shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [id])
   shoppingListId Int

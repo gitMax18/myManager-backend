@@ -3,6 +3,20 @@ import prisma from "../prisma/prismaClient";
 import catchAsyncError from "../utils/catchAsyncError";
 import { Prisma } from "@prisma/client";
 
+export const getShoppingLists = catchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const shoppingList = await prisma.shoppingList.findMany({
+            include: {
+                products: true,
+            },
+        });
+        res.status(200).json({
+            message: "all shopping lists record",
+            data: shoppingList,
+        });
+    }
+);
+
 export const addShoppingList = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         let list: Prisma.ShoppingListCreateInput;
@@ -14,7 +28,7 @@ export const addShoppingList = catchAsyncError(
         } else {
             list = {
                 name: req.body.name,
-                shoppingRows: {
+                products: {
                     createMany: {
                         data: req.body.products,
                     },
@@ -23,15 +37,16 @@ export const addShoppingList = catchAsyncError(
         }
 
         const newList = await prisma.shoppingList.create({ data: list });
-        const createdProducts = await prisma.shoppingRow.findMany({
+        const createdProducts = await prisma.product.findMany({
             where: {
                 shoppingListId: newList.id,
             },
         });
 
         res.status(201).json({
+            message: "New list created",
             data: {
-                shoppingList: newList,
+                ...newList,
                 products: createdProducts,
             },
         });

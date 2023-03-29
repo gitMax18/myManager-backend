@@ -2,12 +2,14 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import shoppingListRouter from "./routes/shoppingListRouter";
 import errorMiddlewares from "./middlewares/errorMiddlewares";
+import cors from "cors";
 
 dotenv.config();
 
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 app.use(shoppingListRouter);
