@@ -17,7 +17,7 @@ export const getShoppingLists = catchAsyncError(
     }
 );
 
-export const addProducts = catchAsyncError(
+export const addProduct = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
 
@@ -30,6 +30,20 @@ export const addProducts = catchAsyncError(
 
         res.status(201).json({
             message: "product added",
+            data: product,
+        });
+    }
+);
+
+export const deleteProduct = catchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const product = await prisma.product.delete({
+            where: {
+                id: +req.params.id,
+            },
+        });
+        res.status(200).json({
+            message: "product deleted",
             data: product,
         });
     }
