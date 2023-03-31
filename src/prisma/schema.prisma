@@ -24,6 +24,7 @@ model Product {
   updatedAt      DateTime     @updatedAt
   name           String
   quantity       Int
+  price          Int?
   shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [id])
   shoppingListId Int
 }

@@ -17,34 +17,16 @@ export const getShoppingLists = catchAsyncError(
     }
 );
 
-export const addProduct = catchAsyncError(
+export const deleteShoppingList = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
-        const { id } = req.params;
-
-        const product = await prisma.product.create({
-            data: {
-                shoppingListId: +id,
-                ...req.body,
-            },
-        });
-
-        res.status(201).json({
-            message: "product added",
-            data: product,
-        });
-    }
-);
-
-export const deleteProduct = catchAsyncError(
-    async (req: Request, res: Response, next: NextFunction) => {
-        const product = await prisma.product.delete({
+        const shoppingList = await prisma.shoppingList.delete({
             where: {
                 id: +req.params.id,
             },
         });
         res.status(200).json({
-            message: "product deleted",
-            data: product,
+            message: "Shopping list deleted",
+            data: shoppingList,
         });
     }
 );
@@ -81,6 +63,74 @@ export const addShoppingList = catchAsyncError(
                 ...newList,
                 products: createdProducts,
             },
+        });
+    }
+);
+
+export const updateShoppingList = catchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        console.log(req.body);
+        const updatedShoppingList = await prisma.shoppingList.update({
+            where: {
+                id: +req.params.id,
+            },
+            data: {
+                ...(req.body as Prisma.ShoppingListUpdateInput),
+            },
+        });
+        res.status(200).json({
+            message: "shoppingList updated",
+            data: updatedShoppingList,
+        });
+    }
+);
+
+export const addProduct = catchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+
+        const product = await prisma.product.create({
+            data: {
+                shoppingListId: +id,
+                ...req.body,
+            },
+        });
+
+        res.status(201).json({
+            message: "product added",
+            data: product,
+        });
+    }
+);
+
+export const updateProduct = catchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const updatedProduct = await prisma.product.update({
+            where: {
+                id: +req.params.id,
+            },
+            data: {
+                ...(req.body as Prisma.ProductUpdateInput),
+            },
+        });
+
+        res.status(200).json({
+            message: "Product updated",
+            data: updatedProduct,
+        });
+    }
+);
+
+export const deleteProduct = catchAsyncError(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const product = await prisma.product.delete({
+            where: {
+                id: +req.params.id,
+            },
+        });
+        res.status(200).json({
+            message: "product deleted",
+            data: product,
         });
     }
 );
