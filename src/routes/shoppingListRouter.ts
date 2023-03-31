@@ -1,13 +1,13 @@
 import { Router } from "express";
-import {
-    addShoppingList,
-    getShoppingLists,
-    addProduct,
-    deleteProduct,
-} from "../controllers/shoppingList";
 import createShoppingListValidators from "../middlewares/validators/createShoppingListValidators";
 import addProductValidators from "../middlewares/validators/addProductValidators";
-import { deleteShoppingList, updateProduct, updateShoppingList } from "../controllers/shoppingList";
+import {
+    deleteShoppingList,
+    updateShoppingList,
+    addShoppingList,
+    getShoppingLists,
+} from "../controllers/shoppingList";
+import { addProduct, deleteProduct, updateProduct } from "../controllers/product";
 
 const router = Router();
 
