@@ -78,9 +78,17 @@ export const updateShoppingList = catchAsyncError(
                 ...(req.body as Prisma.ShoppingListUpdateInput),
             },
         });
+        const products = await prisma.product.findMany({
+            where: {
+                shoppingListId: updatedShoppingList.id,
+            },
+        });
         res.status(200).json({
             message: "shoppingList updated",
-            data: updatedShoppingList,
+            data: {
+                ...updatedShoppingList,
+                products,
+            },
         });
     }
 );
