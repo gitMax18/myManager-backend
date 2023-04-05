@@ -25,6 +25,18 @@ model Product {
   name           String
   quantity       Int
   price          Int?
+  category       Category     @default(UNKNOW)
+  isInCart       Boolean      @default(false)
   shoppingList   ShoppingList @relation(fields: [shoppingListId], references: [id])
   shoppingListId Int
+}
+
+enum Category {
+  DRY
+  FRESH
+  HOUSEHOLD
+  FROZEN
+  BEVERAGE
+  HYGIENIC
+  UNKNOW
 }
