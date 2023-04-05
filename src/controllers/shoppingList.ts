@@ -50,19 +50,16 @@ export const addShoppingList = catchAsyncError(
             };
         }
 
-        const newList = await prisma.shoppingList.create({ data: list });
-        const createdProducts = await prisma.product.findMany({
-            where: {
-                shoppingListId: newList.id,
+        const newList = await prisma.shoppingList.create({
+            data: list,
+            include: {
+                products: true,
             },
         });
 
         res.status(201).json({
             message: "New list created",
-            data: {
-                ...newList,
-                products: createdProducts,
-            },
+            data: newList,
         });
     }
 );
@@ -77,18 +74,18 @@ export const updateShoppingList = catchAsyncError(
             data: {
                 ...(req.body as Prisma.ShoppingListUpdateInput),
             },
-        });
-        const products = await prisma.product.findMany({
-            where: {
-                shoppingListId: updatedShoppingList.id,
+            include: {
+                products: true,
             },
         });
+        // const products = await prisma.product.findMany({
+        //     where: {
+        //         shoppingListId: updatedShoppingList.id,
+        //     },
+        // });
         res.status(200).json({
             message: "shoppingList updated",
-            data: {
-                ...updatedShoppingList,
-                products,
-            },
+            data: updatedShoppingList,
         });
     }
 );
