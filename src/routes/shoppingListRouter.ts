@@ -8,8 +8,11 @@ import {
     getShoppingLists,
 } from "../controllers/shoppingList";
 import { addProduct, deleteProduct, updateProduct } from "../controllers/product";
+import requireAuth from "../middlewares/requireAuth";
 
 const router = Router();
+router.all("/shoppingList", requireAuth);
+router.all("/product", requireAuth);
 //shoppingList
 router.post("/shoppingList", createShoppingListValidators, addShoppingList);
 router.get("/shoppingList", getShoppingLists);
