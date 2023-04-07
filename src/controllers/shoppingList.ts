@@ -33,15 +33,18 @@ export const deleteShoppingList = catchAsyncError(
 
 export const addShoppingList = catchAsyncError(
     async (req: Request, res: Response, next: NextFunction) => {
-        let list: Prisma.ShoppingListCreateInput;
+        let list: Prisma.ShoppingListCreateInput = {
+            name: req.body.name,
+            user: {
+                connect: {
+                    id: req.userId,
+                },
+            },
+        };
 
-        if (!req.body.products) {
+        if (req.body.products) {
             list = {
-                name: req.body.name,
-            };
-        } else {
-            list = {
-                name: req.body.name,
+                ...list,
                 products: {
                     createMany: {
                         data: req.body.products,
