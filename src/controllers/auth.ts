@@ -20,7 +20,10 @@ export const registerUser = catchAsyncError(
 
         res.status(201).json({
             message: "User created",
-            data: token,
+            data: {
+                token,
+                id: newUser.id,
+            },
         });
     }
 );
@@ -47,7 +50,10 @@ export const loginUser = catchAsyncError(
 
         res.status(200).json({
             message: "User authentified",
-            data: token,
+            data: {
+                token,
+                id: user.id,
+            },
         });
     }
 );
